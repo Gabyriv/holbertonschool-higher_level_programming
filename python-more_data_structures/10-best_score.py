@@ -6,7 +6,7 @@ def best_score(a_dictionary):
 
     best_key = None
     # this is to start with the smallest possible value
-    best_value = -float('inf')  
+    best_value = -float('inf')
 
     for key, value in a_dictionary.items():
         if value > best_value:
