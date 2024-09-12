@@ -1,0 +1,27 @@
+How to use 3-say_my_name
+
+This module defines a print a name function ''say_my_name(first_name, last_name="")
+
+Usage
+
+''say_my_name(...)'' prints "My name is first_name last_name".
+
+
+::
+    >>> say_my_name = __import__('3-say_my_name').say_my_name
+    >>> say_my_name(Gabriel Rivera)
+    My name is Gabriel Rivera
+
+::
+    >>> say_my_name(Gabriel)
+    Gabriel
+
+::
+    >>> say_my_name(1)
+    TraceBack (most recent call last):
+    TypeError: first_name must be a string
+
+::
+    >>> say_my_name(Gabriel, 3)
+    TraceBack (most recent call last):
+    TypeError: last_name must be a string
