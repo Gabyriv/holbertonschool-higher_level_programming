@@ -2,11 +2,11 @@
 
 def say_my_name(first_name, last_name=""):
     """Prints "My name is <first name> <last name>".
-    
+
     Args:
         first_name (str): the first name of the person.
         second_name (str): the last name of the person. Defaults empty string
-        
+
     Raises:
     TypeError: if first or last name aren't strings
     """
