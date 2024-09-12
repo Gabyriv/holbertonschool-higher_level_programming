@@ -3,8 +3,6 @@ How to Use 2-matrix_divided.py
 
 This module defines a matrix division function ``matrix_divided(matrix, div)``.
 
-Usage
-
 
 ``matrix_divided(...)`` returns a new matrix that is a copy of the parameter
 ``matrix`` with all elements divided by ``div``.
@@ -19,8 +17,6 @@ Usage
     >>> print(matrix_divided(matrix, 3))
     [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]
 
-Note that quotients are rounded to a maximum of two decimal places.
-
 ::
 
     >>> matrix = [
@@ -30,14 +26,12 @@ Note that quotients are rounded to a maximum of two decimal places.
     >>> print(matrix_divided(matrix, 3))
     [[0.33, 0.67, 1.0], [1.33, 1.67, 2.0]]
 
-The original matrix is left unchanged.
 
 ::
 
     >>> print(matrix)
     [[1, 2, 3], [4, 5, 6]]
 
-The function can also handle floating-point numbers.
 
 ::
 
@@ -48,7 +42,6 @@ The function can also handle floating-point numbers.
     >>> print(matrix_divided(matrix, 3))
     [[0.37, -0.73, 1.1], [1.47, 1.83, -2.2]]
 
-Integers and floats can be combined.
 
 ::
 
@@ -77,14 +70,6 @@ floats. If ``matrix`` is not a list, a TypeError is raised.
     Traceback (most recent call last):
     TypeError: matrix must be a matrix (list of lists) of integers/floats
 
-Note that an empty list will raise the TypeError.
-
-::
-
-    >>> matrix = []
-    >>> print(matrix_divided(matrix, 3))
-    Traceback (most recent call last):
-    TypeError: matrix must be a matrix (list of lists) of integers/floats
 
 But an empty list of lists will succeed.
 
@@ -130,6 +115,7 @@ of different sizes, a new TypeError is raised.
     >>> print(matrix_divided(matrix, 3))
     Traceback (most recent call last):
     TypeError: Each row of the matrix must have the same size
+
 
 The parameter ``div`` must be either an int or float. Otherwise, a TypeError
 is raised.
