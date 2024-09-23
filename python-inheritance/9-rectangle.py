@@ -12,11 +12,11 @@ class Rectangle(BaseGeometry):
     """
 
     def __init__(self, width, height):
-        """_summary_
+        """Instantiation with width and height
 
         Args:
-            width (_type_): _description_
-            height (_type_): _description_
+            width (int): The width of the rectangle.
+            height (int): The height of the rectangle.
         """
         self.__width = width
         self.__height = height
