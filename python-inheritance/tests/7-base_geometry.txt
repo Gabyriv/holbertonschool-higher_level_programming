@@ -43,6 +43,10 @@ Test integer_validator() with non-integer types:
     Traceback (most recent call last):
     TypeError: average must be an integer
 
+    >>> bg.integer_validator("boolean", True)
+    Traceback (most recent call last):
+    TypeError: boolean must be an integer
+
     >>> bg.integer_validator("complex", 1+2j)
     Traceback (most recent call last):
     TypeError: complex must be an integer
@@ -64,3 +68,25 @@ Test integer_validator() with too many arguments:
     >>> bg.integer_validator("age", 18, 19)
     Traceback (most recent call last):
     TypeError: integer_validator() takes 3 positional arguments but 4 were given
+
+Test integer_validator() with additional non-integer types:
+
+    >>> bg.integer_validator("age", (4,))
+    Traceback (most recent call last):
+    TypeError: age must be an integer
+
+    >>> bg.integer_validator("age", [3])
+    Traceback (most recent call last):
+    TypeError: age must be an integer
+
+    >>> bg.integer_validator("age", True)
+    Traceback (most recent call last):
+    TypeError: age must be an integer
+
+    >>> bg.integer_validator("age", {3, 4})
+    Traceback (most recent call last):
+    TypeError: age must be an integer
+
+    >>> bg.integer_validator("age", None)
+    Traceback (most recent call last):
+    TypeError: age must be an integer
