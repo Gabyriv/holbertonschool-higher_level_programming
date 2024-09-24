@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 import math
 
 
-class Shape():
+class Shape(ABC):
     """Shape class."""
     @abstractmethod
     def area(self):
