@@ -90,10 +90,3 @@ def shape_info(shape):
     perimeter = shape.perimeter()
     print(f"Area: {area}")
     print(f"Perimeter: {perimeter}")
-
-
-circle = Circle(5)
-rectangle = Rectangle(4, 7)
-
-shape_info(circle)
-shape_info(rectangle)
