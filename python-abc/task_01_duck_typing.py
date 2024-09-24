@@ -3,6 +3,7 @@
 
 
 from abc import ABC, abstractmethod
+import math
 
 
 class Shape():
@@ -39,7 +40,7 @@ class Circle(Shape):
         Returns:
             float: The area of a circle.
         """
-        return (3.14 * self.radius ** 2)
+        return (math.pi * self.radius ** 2)
 
     def perimeter(self):
         """Calculates the circumference of a circle.
@@ -47,7 +48,7 @@ class Circle(Shape):
         Returns:
             float: The circumference of a circle.
         """
-        return (2 * 3.14 * self.radius)
+        return (2 * math.pi * self.radius)
 
 
 class Rectangle(Shape):
