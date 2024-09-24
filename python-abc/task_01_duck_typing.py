@@ -90,7 +90,7 @@ def shape_info(shape):
 
     Args:
         shape (Shape): Shape class
-        """
+    """
     area = shape.area()
     perimeter = shape.perimeter()
     print(f"Area: {area}")
