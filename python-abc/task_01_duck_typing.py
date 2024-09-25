@@ -26,7 +26,7 @@ class Circle(Shape):
         Shape (class): An abstract class.
     """
 
-    def __init__(self, radius):
+    def __init__(self, radius: float):
         """Constructor
 
         Args:
@@ -58,7 +58,7 @@ class Rectangle(Shape):
         Shape (class): An abstract class.
     """
 
-    def __init__(self, width, height):
+    def __init__(self, width: float, height: float):
         """Constructor.
 
         Args:
