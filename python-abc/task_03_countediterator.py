@@ -40,3 +40,16 @@ class CountedIterator:
             return next(self.iterator)
         except StopIteration:
             raise StopIteration
+
+# Testing
+
+
+data = [1, 2, 3, 4]
+counted_iter = CountedIterator(data)
+
+try:
+    while True:
+        item = next(counted_iter)
+        print(f"Got {item}, total {counted_iter.get_count()} items iterated.")
+except StopIteration:
+    print("No more items.")
