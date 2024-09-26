@@ -2,7 +2,7 @@
 """Define a class named CountedIterator."""
 
 
-class CountedIterator:
+class CountedIterator():
     """CountedIterator"""
 
     def __init__(self, iterator):
@@ -41,9 +41,8 @@ class CountedIterator:
         except StopIteration:
             raise StopIteration
 
+
 # Testing
-
-
 data = [1, 2, 3, 4]
 counted_iter = CountedIterator(data)
 
