@@ -36,8 +36,7 @@ class CountedIterator:
             The next item from the list.
         """
         self.counter += 1
-
         try:
             return next(self.iterator)
-        except:
+        except StopIteration:
             raise StopIteration
