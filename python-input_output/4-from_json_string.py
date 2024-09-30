@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""Define a function that returns an obj(Python data structure) represented by a JSON string"""
+"""Define a function that returns an obj
+(Python data structure) represented by a JSON string"""
 
 import json
 
