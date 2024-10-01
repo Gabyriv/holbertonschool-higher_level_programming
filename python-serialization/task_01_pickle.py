@@ -1,66 +1,42 @@
 #!/usr/bin/python3
-"""Define a class CustomObject"""
+"""Pickle Module"""
 import pickle
 
 
 class CustomObject:
-    """Define a class CustomObject"""
+    """A custom Python class to demonstrate object serialization/deserialization
+    using the pickle module
+    """
 
-    def __init__(self, name: str, age: int, is_student: bool):
-        """
-        Initialize CustomObject instance
-
-        Args:
-            name (str): The name of the custom object
-            age (int): The age of the custom object
-            is_student (bool): Whether the custom object is a student
-        """
+    def __init__(self, name, age, is_student):
+        """Initialize a new instance of CustomObject"""
         self.name = name
         self.age = age
         self.is_student = is_student
 
     def display(self):
-        """
-        Display the properties of the CustomObject instance
-
-        The display method prints out the name, age and whether the
-        custom object is a student or not.
-        """
+        """Print out the object's attributes"""
         print(f"Name: {self.name}")
         print(f"Age: {self.age}")
         print(f"Is Student: {self.is_student}")
 
-    def serialize(self, filename: str):
-        """
-        Serialize the CustomObject instance to a file using pickle
-
-        Args:
-            filename (str): The name of the file to serialize the object to
+    def serialize(self, filename):
+        """Serialize the current instance of the object and save it to the
+        provided filename
         """
         try:
             with open(filename, 'wb') as file:
                 pickle.dump(self, file)
-        except (OSError, pickle.PickleError) as error:
-            print(error)
+        except FileNotFoundError:
+            return None
 
     @classmethod
-    def deserialize(cls, filename: str):
-        """
-        Deserialize a CustomObject instance from a file using pickle
-
-        Args:
-            filename (str): The name of the file to deserialize the object from
-
-        Returns:
-            CustomObject: The deserialized CustomObject instance
+    def deserialize(cls, filename):
+        """Load and return an instance of the CustomObject from the provided
+        filename
         """
         try:
             with open(filename, 'rb') as file:
-                obj = pickle.load(file)
-                if isinstance(obj, cls):
-                    return obj
-                else:
-                    return None
-        except (OSError, pickle.PickleError) as error:
-            print(error)
+                return pickle.load(file)
+        except FileNotFoundError:
             return None
