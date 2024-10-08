@@ -53,7 +53,7 @@ class Server(http.server.BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(info).encode())
 
         else:
-            self.send_error(code=404, message="Endpoint Not Found")
+            return self.send_error(code=404, message="Endpoint Not Found")
 
 
 PORT = 8000
