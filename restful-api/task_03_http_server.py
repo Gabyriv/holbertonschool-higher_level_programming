@@ -8,7 +8,13 @@ import json
 
 
 class Server(http.server.BaseHTTPRequestHandler):
+    """Handles Get requests and serves responses
+    based on the requested path.
+    """
+
     def do_GET(self):
+        """This function handles the endpoints
+        """
         if self.path == "/":
             self.send_response(200)
             self.send_header("Content-type", "text/plain")
