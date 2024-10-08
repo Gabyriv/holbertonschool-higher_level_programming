@@ -31,7 +31,6 @@ class Server(http.server.BaseHTTPRequestHandler):
                 "age": 30,
                 "city": "New York"
             }
-
             self.wfile.write(json.dumps(data).encode())
 
         elif self.path == "/status":
@@ -49,11 +48,16 @@ class Server(http.server.BaseHTTPRequestHandler):
                 "version": "1.0",
                 "description": "A simple API built with http.server"
             }
-
             self.wfile.write(json.dumps(info).encode())
 
         else:
-            self.send_error(code=404, message="Endpoint Not Found")
+            self.send_response(404)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            error_message = {
+                "error": "Endpoint not found"
+            }
+            self.wfile.write(json.dumps(error_message).encode())
 
 
 PORT = 8000
