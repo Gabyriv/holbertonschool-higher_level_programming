@@ -17,11 +17,8 @@ def home():
 
 
 @app.route("/data")
-def json_data():
-    if not users:
-        return jsonify({"error": "User not found"}), 200
-    else:
-        return jsonify(list(users.keys()))
+def get_data():
+    return jsonify(list(users.keys()))
 
 
 @app.route("/status")
@@ -31,7 +28,7 @@ def status():
 
 # Dynamic route feature in flask
 @app.route("/users/<username>")
-def get_users(username):
+def get_user(username):
     user = users.get(username)
     if user:
         return jsonify(user)
