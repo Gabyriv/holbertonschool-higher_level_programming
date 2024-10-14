@@ -1,26 +1,26 @@
 #!/usr/bin/python3
-"""API Security and Authentication Techniques"""
 
 from flask import Flask, jsonify, request
 from flask_httpauth import HTTPBasicAuth
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token, get_jwt_identity
-from flask_jwt_extended import jwt_required, JWTManager
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = 'super_secret'
-app.config["JWT_SECRET_KEY"] = "your_jwt_secret_key"
+app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
 auth = HTTPBasicAuth()
 jwt = JWTManager(app)
 
 users = {
-    "user1": {"username": "user1",
-              "password": generate_password_hash("hello"),
-              "role": "user"
-              },
-    "admin1": {"username": "admin1",
-               "password": generate_password_hash("bye"),
-               "role": "admin"}
+    "user1": {
+        "username": "user1",
+        "password": generate_password_hash("hello"),
+        "role": "user"
+    },
+    "admin1": {
+        "username": "admin1",
+        "password": generate_password_hash("bye"),
+        "role": "admin"
+    }
 }
 
 # Basic Authentication
@@ -29,28 +29,24 @@ users = {
 @auth.verify_password
 def verify_password(username, password):
     user = users.get(username)
-    if (username in users and
-            check_password_hash(user['password'], password)):
+    if user and check_password_hash(user['password'], password):
         return user
     return None
 
 
-@app.route('/basic-protected')
+@app.route('/basic-protected', methods=['GET'])  # 3a
 @auth.login_required
 def basic_protected():
     return "Basic Auth: Access Granted"
 
 
 # JSON Web Token(JWT) Authentication
-
-
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
     user = users.get(username)
-
     if user and check_password_hash(user['password'], password):
         access_token = create_access_token(
             identity={'username': username, 'role': user['role']})
@@ -65,7 +61,7 @@ def jwt_protected():
 
 
 @app.route('/admin-only')
-@jwt_required
+@jwt_required()
 def admin_only():
     current_user = get_jwt_identity()
     if current_user['role'] != 'admin':
@@ -98,5 +94,5 @@ def handle_needs_fresh_token_error(jwt_header, jwt_payload):
     return jsonify({"error": "Fresh token required"}), 401
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()
