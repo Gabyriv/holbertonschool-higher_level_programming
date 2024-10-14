@@ -26,9 +26,11 @@ users = {
 
 @auth.verify_password
 def verify_password(username, password):
+    user = users.get(username)
     if (username in users and
-            check_password_hash(users[username]['password'], password)):
-        return username
+            check_password_hash(user['password'], password)):
+        return user
+    return None
 
 
 @app.route('/basic-protected')
@@ -42,16 +44,16 @@ def basic_protected():
 
 @app.route('/login', methods=['POST'])
 def login():
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    user = users.get(username)
 
-    if (username in users and
-            check_password_hash(users[username]['password'], password)):
+    if user and check_password_hash(user['password'], password):
         access_token = create_access_token(
-            identity={"username": username, "role": users[username]['role']})
-        return jsonify(access_token=access_token), 200
-    else:
-        return jsonify({"message": "Unauthorized username or password"}), 401
+            identity={'username': username, 'role': user['role']})
+        return jsonify({"access_token": access_token}), 200
+    return jsonify({"error": "Invalid credentials"}), 401
 
 
 @app.route('/jwt-protected')
