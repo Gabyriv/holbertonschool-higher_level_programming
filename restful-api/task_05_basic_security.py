@@ -9,8 +9,8 @@ from flask_jwt_extended import jwt_required, JWTManager
 
 app = Flask(__name__)
 app.config-["JWT_SECRET_KEY"] = "123"
-jwt = JWTManager(app)
 auth = HTTPBasicAuth()
+jwt = JWTManager(app)
 
 users = {
     "user1": {"username": "user1",
@@ -34,7 +34,7 @@ def verify_password(username, password):
 @app.route('/basic-protected')
 @auth.login_required
 def basic_protected():
-    return jsonify({"message": "Basic Auth: Access Granted"})
+    return "Basic Auth: Access Granted"
 
 
 # JSON Web Token(JWT) Authentication
@@ -57,7 +57,7 @@ def login():
 @app.route('/jwt-protected')
 @jwt_required()
 def jwt_protected():
-    return jsonify({"message": "JWT Auth: Access Granted"})
+    return "JWT Auth: Access Granted"
 
 
 @app.route('/admin-only')
@@ -80,8 +80,18 @@ def handle_invalid_token_error(err):
 
 
 @jwt.expired_token_loader
-def handle_expired_token_error(header, payload):
+def handle_expired_token_error(jwt_header, jwt_payload):
     return jsonify({"error": "Token has expired"}), 401
+
+
+@jwt.revoked_token_loader
+def handle_revoked_token_error(jwt_header, jwt_payload):
+    return jsonify({"error": "Token has been revoked"}), 401
+
+
+@jwt.needs_fresh_token_loader
+def handle_needs_fresh_token_error(jwt_header, jwt_payload):
+    return jsonify({"error": "Fresh token required"}), 401
 
 
 if __name__ == "__main__":
