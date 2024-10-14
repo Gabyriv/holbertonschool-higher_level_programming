@@ -2,19 +2,15 @@
 """API Security and Authentication Techniques"""
 
 from flask import Flask, jsonify, request
-
 from flask_httpauth import HTTPBasicAuth
-
 from werkzeug.security import generate_password_hash, check_password_hash
-
 from flask_jwt_extended import create_access_token, get_jwt_identity
 from flask_jwt_extended import jwt_required, JWTManager
 
 app = Flask(__name__)
-auth = HTTPBasicAuth()
-
 app.config-["JWT_SECRET_KEY"] = "123"
 jwt = JWTManager(app)
+auth = HTTPBasicAuth()
 
 users = {
     "user1": {"username": "user1",
@@ -38,7 +34,7 @@ def verify_password(username, password):
 @app.route('/basic-protected')
 @auth.login_required
 def basic_protected():
-    return "Basic Auth: Access Granted"
+    return jsonify({"message": "Basic Auth: Access Granted"})
 
 
 # JSON Web Token(JWT) Authentication
@@ -49,12 +45,10 @@ def login():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
 
-    if not username or not password:
-        return jsonify({"message": "Missing username or password"}), 400
-
     if (username in users and
             check_password_hash(users[username]['password'], password)):
-        access_token = create_access_token(identity=username)
+        access_token = create_access_token(
+            identity={"username": username, "role": users[username]['role']})
         return jsonify(access_token=access_token), 200
     else:
         return jsonify({"message": "Unauthorized username or password"}), 401
@@ -63,14 +57,31 @@ def login():
 @app.route('/jwt-protected')
 @jwt_required()
 def jwt_protected():
-    get_jwt_identity()
-    return "JWT Auth: Access Granted"
+    return jsonify({"message": "JWT Auth: Access Granted"})
 
 
 @app.route('/admin-only')
-@auth.login_required(role='admin')
+@jwt_required
 def admin_only():
+    current_user = get_jwt_identity()
+    if current_user['role'] != 'admin':
+        return jsonify({"error": "Admin access required"}), 403
     return "Admin Access: Granted"
+
+
+@jwt.unauthorized_loader
+def handle_unauthorized_error(err):
+    return jsonify({"error": "Missing or invalid token"}), 401
+
+
+@jwt.invalid_token_loader
+def handle_invalid_token_error(err):
+    return jsonify({"error": "Invalid token"}), 401
+
+
+@jwt.expired_token_loader
+def handle_expired_token_error(header, payload):
+    return jsonify({"error": "Token has expired"}), 401
 
 
 if __name__ == "__main__":
