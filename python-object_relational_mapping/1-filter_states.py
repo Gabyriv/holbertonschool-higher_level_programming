@@ -1,20 +1,30 @@
 #!/usr/bin/python3
 
 import MySQLdb
+import sys
 
-db = MySQLdb.connect(
-    host = 'localhost',
-    port = 3306,
-    user = 'root',
-    password = '',
-    database = 'hbtn_0e_0_usa'
-    )
+if __name__ == "__main__":
+    if len(sys.argv) != 5:
+        print("Usage: {} <username> <password> <database_name>".format(sys.argv[0]))
+        sys.exit(1)
 
-cur = db.cursor()
-cur.execute("""SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC""")
+    username = sys.argv[1]
+    password = sys.argv[2]
+    database_name = sys.argv[3]
 
-for row in cur.fetchall():
-    print(row)
+    db = MySQLdb.connect(
+        host = 'localhost',
+        port = 3306,
+        user = username,
+        password = password,
+        database = database_name
+        )
 
-cur.close()
-db.close()
+    cur = db.cursor()
+    cur.execute("""SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC""")
+
+    for row in cur.fetchall():
+        print(row)
+
+    cur.close()
+    db.close()
