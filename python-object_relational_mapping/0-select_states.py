@@ -1,19 +1,25 @@
 #!/usr/bin/python3
 
 import MySQLdb
-db = MySQLdb.connect(
-    host = 'localhost',
-    port = 3306,
-    user = 'root',
-    password = '',
-    database = 'hbtn_0e_0_usa'
-)
-cur = db.cursor()
-states = cur.execute("""SELECT * FROM states ORDER BY id ASC""")
+import sys
 
+if __name__ == "__main__":
+    db = MySQLdb.connect(
+        host='localhost',
+        port=3306,
+        user=sys.argv[1],
+        password=sys.argv[2],
+        db=sys.argv[3]
+    )
 
-for row in cur.fetchall():
-    print(row)
+    cursor = db.cursor()
 
-cur.close()
-db.close()
+    query = "SELECT * FROM states ORDER BY id ASC;"
+    cursor.execute(query)
+
+    states = cursor.fetchall()
+    for state in states:
+        print(state)
+
+    cursor.close()
+    db.close()
