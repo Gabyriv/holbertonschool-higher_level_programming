@@ -1,28 +1,34 @@
 #!/usr/bin/python3
 
 """
-Script that lists all states in the database where name starts with N.
+Script that lists all states with a name
+starting with the letter 'N' from the database.
 """
 
-import MySQLdb
 import sys
+import MySQLdb
 
-if __name__ == "__main__":
+if __name__ == '__main__':
+
+    username = sys.argv[1]
+    password = sys.argv[2]
+    database = sys.argv[3]
 
     db = MySQLdb.connect(
-        host="localhost",
+        host='localhost',
         port=3306,
-        user=sys.argv[1],
-        passwd=sys.argv[2],
-        db=sys.argv[3]
+        user=username,
+        passwd=password,
+        db=database
     )
 
     cur = db.cursor()
+
     cur.execute("SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC")
 
-    rows = cur.fetchall()
-    for row in rows:
-        print(row)
+    states = cur.fetchall()
+    for state in states:
+        print(state)
 
     cur.close()
     db.close()
