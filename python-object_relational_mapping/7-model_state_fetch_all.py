@@ -14,7 +14,8 @@ if __name__ == '__main__':
     password = sys.argv[2]
     database = sys.argv[3]
 
-    engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(username, password, 'localhost', database))
+    engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                           .format(username, password, 'localhost', database))
 
     Session = sessionmaker(bind=engine)
     session = Session()
