@@ -1,28 +1,16 @@
 #!/usr/bin/python3
 
 """
-Model class for City objects.
+Model for city objects
 """
-
 
 from sqlalchemy import Column, Integer, String, ForeignKey
 from model_state import Base
-from sqlalchemy.orm import relationship
-
 
 class City(Base):
-    """
-    Model class for City objects.
-
-    Args:
-        name (str): Name of the city.
-        state_id (int): ID of the state.
-        state (State): State object.
-    """
+    """City class that inherits from Base"""
     __tablename__ = 'cities'
 
-    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     name = Column(String(128), nullable=False)
     state_id = Column(Integer, ForeignKey('states.id'), nullable=False)
-
-    state = relationship("State")
