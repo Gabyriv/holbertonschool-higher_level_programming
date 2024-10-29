@@ -10,6 +10,14 @@ from model_state import Base
 from sqlalchemy.orm import relationship
 
 class City(Base):
+    """
+    Model class for City objects.
+
+    Args:
+        name (str): Name of the city.
+        state_id (int): ID of the state.
+        state (State): State object.
+    """
     __tablename__ = 'cities'
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
