@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 
 """
-This script connects to a MySQL database and
-retrieves the id and name of all states
-from the 'states' table.
+Script that lists all states from a given database.
 """
 
 
@@ -19,10 +17,10 @@ if __name__ == "__main__":
         db=sys.argv[3])
     cur = db.cursor()
 
-    cur.execute("""SELECT id, name FROM states ORDER BY states.id ASC""")
+    cur.execute("SELECT * FROM states ORDER BY id ASC")
     rows = cur.fetchall()
     for row in rows:
-        print(f"{row}")
+        print(row)
 
     cur.close()
     db.close()
