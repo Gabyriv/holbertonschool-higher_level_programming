@@ -47,10 +47,11 @@ def read_csv_file(filename):
         return []
 
 def read_sqlite():
+    conn = None
     try:
         conn = sqlite3.connect('products.db')
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM products")
+        cursor.execute("SELECT id, name, category, price FROM products")
         all_products = cursor.fetchall()
         conn.close()
 
@@ -59,6 +60,9 @@ def read_sqlite():
     except sqlite3.Error as e:
         print(f"Error connecting to database: {e}")
         return []
+    finally:
+        if conn:
+            conn.close()
 
 @app.route('/products')
 def display_products():
@@ -71,7 +75,7 @@ def display_products():
     elif source == 'csv':
         products = read_csv_file('products.csv')
 
-    elif source == 'sqlite':
+    elif source == 'sql':
         products = read_sqlite()
 
     else:
