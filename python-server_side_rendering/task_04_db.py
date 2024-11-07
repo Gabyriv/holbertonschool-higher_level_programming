@@ -46,13 +46,18 @@ def read_csv_file(filename):
     except FileNotFoundError:
         return []
 
-def read_sqlite_file(filename):
+def read_sqlite():
     try:
-        conn = sqlite3.connect(filename)
+        conn = sqlite3.connect('products.db')
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM products")
-        return cursor.fetchall()
-    except FileNotFoundError:
+        all_products = cursor.fetchall()
+        conn.close()
+
+        products = [{'id': row[0], 'name': row[1], 'category': row[2], 'price': row[3]} for row in all_products]
+        return products
+    except sqlite3.Error as e:
+        print(f"Error connecting to database: {e}")
         return []
 
 @app.route('/products')
@@ -67,7 +72,7 @@ def display_products():
         products = read_csv_file('products.csv')
 
     elif source == 'sqlite':
-        products = read_sqlite_file('products.db')
+        products = read_sqlite()
 
     else:
         return render_template('product_display.html', error="Wrong source")
