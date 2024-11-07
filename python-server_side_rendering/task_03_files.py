@@ -26,38 +26,44 @@ def items():
     except Exception as e:
         return render_template('items.html', items=[])
 
+def load_json(filename):
+    with open(filename, 'r') as file:
+        data = json.load(file)
+        return data
+
+def load_csv(filename):
+    products = []
+    with open(filename, 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            row['id'] = int(row['id'])
+            row['price'] = float(row['price'])
+            products.append(row)
+        return products
+
 @app.route('/products')
-def products():
+def display_products():
     source = request.args.get('source')
-    product_id = request.args.get('id')
+    product_id = request.args.get('id', type=int)
+    products = []
+    error_message = None
 
-    if source not in ['json', 'csv']:
-        return render_template('product_display.html',
-                            error="Wrong source")
+    if source == 'json':
+        try:
+            products = load_json('products.json')
+        except FileNotFoundError:
+            error_message = "JSON file not found."
+    elif source == 'csv':
+        try:
+            products = load_csv('products.csv')
+        except FileNotFoundError:
+            error_message = "CSV file not found."
+    else:
+        error_message = "Wrong source."
 
-    try:
-        products = []
-        if source == 'json':
-            with open('products.json', 'r') as file:
-                data = json.load(file)
-                products = data['products']
-        else:
-            with open('products.csv', 'r') as file:
-                reader = csv.DictReader(file)
-                products = [row for row in reader]
+    if product_id and not error_message:
+        products = [p for p in products if p["id"] == product_id]
+        if not products:
+            error_message = "Product not found."
 
-        if product_id:
-            products = [product for product in products if str(product.get('id')) == str(product_id)]
-            if not products:
-                return render_template('product_display.html',
-                                    error="Product not found")
-
-        return render_template('product_display.html',
-                            products=products)
-
-    except Exception as e:
-        return render_template('product_display.html',
-                            error=f"Error reading file: {str(e)}")
-
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    return render_template('product_display.html', products=products, error_message=error_message)
